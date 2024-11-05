@@ -194,3 +194,4 @@ zstandard==0.23.0
 st-gsheets-connection
 gspread
 matplotlib
+lightgbm
