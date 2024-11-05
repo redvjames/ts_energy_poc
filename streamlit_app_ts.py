@@ -7,11 +7,13 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timezone, timedelta
 import time
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 try:
-    df_record = pd.read_csv('./records.csv', index_col=0)
+    df_input = pd.read_csv('./data/data.csv', index_col=0)
 except FileNotFoundError:
-    df_record = pd.DataFrame(columns=['timestamp', 'model', 'n_docs', 'prompt', 'response', 'generation_time'])
+    df_input = pd.DataFrame(columns=['datetime', 'energy'])
 
 
 # Create columns for the title and logo
@@ -19,126 +21,213 @@ col1, col2 = st.columns([3.5, 1])  # Adjust the ratio as needed
 
 # Title in the first column
 with col1:
-    st.title("📄 DFA Q&A")
+    st.title("⚡ Enegy Consumption Forecasting POC")
     st.write(
-        "This app answers questions based on FAQs found [here](https://consular.dfa.gov.ph/faqs-menu?). "
+        "This app forecasts hourly energy consumption of buildings"
+        "with an input of at least 7 days of hourly data."
     )
 # Logo and "Developed by CAIR" text in the second column
 with col2:
     st.image("images/CAIR_cropped.png", use_column_width=True)
     st.markdown(
         """
-        <div style="text-align: right; margin-top: -10px;">
+        <div style="text-align: center; margin-top: -10px;">
             Developed by CAIR
         </div>
         """, 
         unsafe_allow_html=True)
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
 # Adding the sidebar for selecting the repo_id
-st.sidebar.title("Model Selection")
-repo_id = st.sidebar.selectbox(
-    "Select the HuggingFace model:",
-    options=[
-        "mistralai/Mixtral-8x7B-Instruct-v0.1",
-        "mistralai/Mistral-7B-Instruct-v0.2",
-        "mistralai/Mistral-7B-Instruct-v0.3",
-        "microsoft/Phi-3-mini-4k-instruct",
-        "google/gemma-2-2b-it",
-        "mistralai/Mistral-Small-Instruct-2409"
-    ],
-    index=0  # Default selection
+st.sidebar.title("Input Data")
+
+uploaded_file = st.sidebar.file_uploader("Choose a file")
+
+edited_df = st.sidebar.data_editor(df_input)
+
+horizon = st.radio(
+    "Forecast Horizon",
+    ["1 Day", "1 Week"],
+    captions=[
+        "24 Hours",
+        "168 Hours"
+    ], horizontal=True
 )
 
-n_retrieved_docs = st.sidebar.number_input(
-    "Number of documents to retrieve:",
-    min_value=1,
-    max_value=20,
-    value=5,  # Default value
-    step=1
-)
+if horizon == "1 Day":
+    st.write("The model will predict 1 Day Ahead.")
+else:
+    st.write("The model will predict 1 Week Ahead.")
 
-def convert_df(df):
-   return df.to_csv(index=False)
+if st.button('Predict Energy Consumption'):
+    if uploaded_file is not None:
+        # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+        st.write(bytes_data)
 
-st.sidebar.download_button('Download Results Data', 
-                            convert_df(df_record), 
-                            'records.csv',
-                            "text/csv",
-                            key='download-csv')
+        # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+        st.write(stringio)
 
-from langchain_huggingface import HuggingFaceEndpoint
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
-from langchain_core.runnables import RunnablePassthrough, RunnableAssign
+        # To read file as string:
+        string_data = stringio.read()
+        st.write(string_data)
 
-from dotenv import load_dotenv
-load_dotenv()
+        # Can be used wherever a "file-like" object is accepted:
+        df_input = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+    else:
+        df_input = edited_df.copy()
 
-from prompts import query_extract_prompt, dfa_rag_prompt
-
-llm = HuggingFaceEndpoint(repo_id=repo_id, temperature=0.1)
-
-# RETRIEVER 
-CHROMA_PATH = "chroma"
-
-embedding_function = OpenAIEmbeddings()
-db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
-retriever =  db.as_retriever(search_kwargs={'k': n_retrieved_docs})
-
-# Start the timer
-start_time = time.time()
-
-def format_docs(docs):
-    return f"\n\n".join(f"[FAQ]" + doc.page_content.replace("\n", " ") for n, doc in enumerate(docs, start=1))
-
-chain = query_extract_prompt | llm | {"context": retriever | format_docs, "question": RunnablePassthrough()} | dfa_rag_prompt | llm
-
-# React to user input
-if prompt := st.chat_input("What is up?"):
-    # Display user message in chat message container
-
-    st.chat_message("user").markdown(prompt)
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-    response = chain.invoke({"question": prompt})
-    # response = f"Echo: {prompt.upper()}"
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        st.markdown(response)
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-    utc_now = datetime.now(timezone.utc)
-    utc_plus_8 = utc_now + timedelta(hours=8)
-
-    # End the timer
-    end_time = time.time()
+    from model_load import load_model
+    model = load_model()
     
-    # Calculate the execution time
-    execution_time = end_time - start_time
-    
-    new_entry = pd.DataFrame({
-            'timestamp': [utc_plus_8.strftime('%Y-%m-%d %H:%M:%S')],
-            'model': [repo_id],
-            'n_docs': [n_retrieved_docs],
-            'prompt': [prompt],
-            'response': [response],
-            'generation_time': [execution_time]
-        })
+    if horizon == "1 Day":
+        extended_index = pd.date_range(start=df_input.index[-1], periods=25, freq='H')[1:]
+        df_input = pd.concat([df_input, pd.DataFrame(index=extended_index)])
 
-    df_record = pd.concat([df_record, new_entry], ignore_index=True)
-    
-    df_record.to_csv('./records.csv')
+        df_ts = pd.DataFrame()
+        df_ts['y'] = df_input[['energy']]
 
-    st.dataframe(df_record, height=300, width=1000)
-# st.write(message)
+        ## Plotting ##
+
+        # Lookback window size 
+        window_size = 24
+        h = 24
+
+        for w in range(window_size):
+            df_ts['y-' + str(w + 1)] = df_input[['energy']].shift(w+1)
+
+        df_ts = df_ts[window_size:]
+        # display(df_ts)
+
+        X = df_ts[df_ts.columns[1:]]
+        X = df_ts[df_ts.columns[1:]]  # Feature
+        Y = df_ts['y']  # Target
+
+        X_train = X[:-h]
+        X_test = X[-h:]
+        Y_train = Y[:-h]
+        Y_test = Y[-h:]
+
+        scaler_x = StandardScaler().fit(X_test)
+        scaler_y = StandardScaler().fit(df_input.values.reshape(-1, 1))
+        x_train = scaler_x.transform(X_test)
+
+
+        y_pred = model.predict(x_train)
+        y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1))
+        
+        ## Plotting ##
+        
+        df_plot = pd.DataFrame(index=df_input.index[-h:])
+        df_plot['Baseline'] = X_test['y-24'].values
+        df_plot['Prediction'] = y_pred
+
+        df_test = pd.concat([df_input, df_plot]).dropna(how='all')
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df_plot['Prediction'].plot(ax=ax, label='Actual')
+        df_plot['Baseline'].plot(ax=ax, linestyle='--')
+        plt.autoscale()
+        plt.legend(['Prediction', 'Baseline'])
+        plt.xlabel('Datetime')
+        plt.ylabel('Energy')
+        plt.title('Model Comparison')
+        st.pyplot(fig)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df_input.plot(ax=ax, label='energy')
+        df_test['Prediction'].plot(ax=ax, label='historical')
+        plt.axvline(x=len(df_input)-25, color='red', linestyle='--', linewidth=1)
+        plt.autoscale()
+        plt.legend(['Historical', 'Prediction'])
+        plt.xlabel('Datetime')
+        plt.ylabel('Energy')
+        plt.title('Model Comparison')
+        st.pyplot(fig)
+
+        st.dataframe(pd.DataFrame(df_plot['Prediction']), height=300, width=400)
+    
+    else:
+        
+        extended_index = pd.date_range(start=df_input.index[-1], periods=169, freq='H')[1:]
+        df_input = pd.concat([df_input, pd.DataFrame(index=extended_index)])
+        
+        df_ts = pd.DataFrame()
+        df_ts['y'] = df_input[['energy']]
+
+        ## Modelling ##
+           
+        # Lookback window size 
+        window_size = 24
+        h =168
+
+        for w in range(window_size):
+            df_ts['y-' + str(w + 1)] = df_input[['energy']].shift(w+1)
+
+        df_ts = df_ts[window_size:]
+        # display(df_ts)
+
+        X = df_ts[df_ts.columns[1:]]
+        X = df_ts[df_ts.columns[1:]]  # Feature
+        Y = df_ts['y']  # Target
+
+        X_train = X[:-h]
+        X_test = X[-h:]
+        Y_train = Y[:-h]
+        Y_test = Y[-h:]
+
+        scaler_x = StandardScaler().fit(X_test)
+        scaler_y = StandardScaler().fit(df_input.values.reshape(-1, 1))
+        x_train = scaler_x.transform(X_test)
+        
+        y_pred = model.predict(x_train)
+        y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1))
+        
+        ## Plotting ##
+        
+        df_plot = pd.DataFrame(index=df_input.index[-h:])
+        df_plot['Baseline'] = X_test['y-24'].values
+        df_plot['Prediction'] = y_pred
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df_plot['Prediction'].plot(ax=ax, label='Actual')
+        df_plot['Baseline'].plot(ax=ax, linestyle='--')
+        plt.autoscale()
+        plt.legend(['Prediction', 'Baseline'])
+        plt.xlabel('Datetime')
+        plt.ylabel('Energy')
+        plt.title('Model Comparison')
+        st.pyplot(fig)
+        
+        df_test = pd.concat([df_input, df_plot]).dropna(how='all')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df_input.plot(ax=ax, label='energy')
+        df_test['Prediction'].plot(ax=ax, label='historical')
+        plt.axvline(x=len(df_input)-169, color='red', linestyle='--', linewidth=1)
+        plt.autoscale()
+        plt.legend(['Historical', 'Prediction'])
+        plt.xlabel('Datetime')
+        plt.ylabel('Energy')
+        plt.title('Model Comparison')
+        st.pyplot(fig)
+        
+        df_day = df_input.reset_index().dropna()
+        df_day['index'] = pd.to_datetime(df_day['index'])
+        df_input_day = df_day.groupby(df_day['index'].dt.floor('D')).sum()
+        df_day2 = df_test['Prediction'].reset_index().dropna()
+        df_day2['index'] = pd.to_datetime(df_day2['index'])
+        df_pred_day = df_day2.groupby(df_day2['index'].dt.floor('D')).sum()
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df_input_day.plot(ax=ax, label='energy')
+        df_pred_day.plot(ax=ax, label='historical')
+        # plt.axvline(x=len(df_input)-25, color='red', linestyle='--', linewidth=1)
+        plt.autoscale()
+        plt.legend(['Historical', 'Prediction'])
+        plt.xlabel('Datetime')
+        plt.ylabel('Energy')
+        plt.title('Model Comparison')
+        st.pyplot(fig)
+        
+        st.dataframe(pd.DataFrame(df_plot['Prediction']), height=300, width=400)
