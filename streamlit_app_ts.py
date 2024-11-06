@@ -74,7 +74,7 @@ if st.button('Predict Energy Consumption'):
 
         # Can be used wherever a "file-like" object is accepted:
         df_input = pd.read_csv(uploaded_file)
-        st.write(dataframe)
+        st.write(df_input)
     else:
         df_input = edited_df.copy()
 
