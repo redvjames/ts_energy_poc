@@ -24,7 +24,7 @@ with col1:
     st.title("⚡ Energy Consumption Forecasting POC")
     st.write(
         "This app forecasts hourly energy consumption of buildings"
-        "with an input of at least 7 days of hourly data."
+        " with an input of at least 7 days of hourly data."
     )
 # Logo and "Developed by CAIR" text in the second column
 with col2:
