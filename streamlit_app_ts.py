@@ -21,7 +21,7 @@ col1, col2 = st.columns([3.5, 1])  # Adjust the ratio as needed
 
 # Title in the first column
 with col1:
-    st.title("⚡ Enegy Consumption Forecasting POC")
+    st.title("⚡ Energy Consumption Forecasting POC")
     st.write(
         "This app forecasts hourly energy consumption of buildings"
         "with an input of at least 7 days of hourly data."
