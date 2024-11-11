@@ -45,7 +45,7 @@ uploaded_file = st.sidebar.file_uploader("Choose a file")
 edited_df = st.sidebar.data_editor(df_input)
 
 horizon = st.radio(
-    "Forecast Horizon",
+    "Forecast Length",
     ["1 Day", "1 Week"],
     captions=[
         "24 Hours",
