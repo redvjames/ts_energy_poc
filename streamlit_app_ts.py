@@ -130,6 +130,7 @@ if st.button('Predict Energy Consumption'):
         plt.xlabel('Datetime')
         plt.ylabel('Energy')
         plt.title('Historical with Forecast Plot')
+        ax.tick_params(axis='x', labelrotation=30)
         plt.show()
         st.pyplot(fig)
 
