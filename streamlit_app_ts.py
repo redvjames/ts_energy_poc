@@ -78,7 +78,7 @@ class Args:
 # Instantiate with dictionary values
 args = Args(
     # repo_path=r'/mount/src/ts_energy_poc/',
-    model='TransformerWithGaussian-M_Thai',
+    model='TransformerWithGaussian-M',
     checkpoint=r'/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt',
     device=None,
     # benchmark=[data_source],
