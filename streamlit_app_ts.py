@@ -115,7 +115,7 @@ model, loss, _ = model_factory(args.model, model_args)
 model = model.to(args.device)
 # transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
-st.write(os.path.dirname(buildings_bench.__file__))
+st.write(os.path.dirname(load_torch_dataset.__file__))
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
