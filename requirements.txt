@@ -1,6 +1,7 @@
+streamlit
+pysqlite3-binary
 safetensors
 scipy
-streamlit
 pandas
 numpy
 matplotlib
