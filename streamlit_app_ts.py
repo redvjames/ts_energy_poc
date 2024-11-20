@@ -77,7 +77,7 @@ class Args:
 
 # Instantiate with dictionary values
 args = Args(
-    # repo_path=r'/mount/src/ts_energy_poc/',
+    repo_path=r'/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/',
     model='TransformerWithGaussian-M',
     checkpoint=r'/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt',
     device=None,
@@ -93,8 +93,8 @@ args = Args(
     batch_size=360,
     num_workers = 4,
     max_epochs=25,
-    patience=10
-    # results_path = r'/mount/src/ts_energy_poc/'
+    patience=10,
+    results_path = r'/mount/src/ts_energy_poc'
 )
 
 model_args = {'context_len': 168,
@@ -119,10 +119,10 @@ transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'tra
 # st.write(checkpoint_path)
 # st.write(f"Checkpoint exists: {os.path.exists(checkpoint_path)}")
 
-# if args.checkpoint != '':
-#     # By default, fine tune all layers
-#     model.load_from_checkpoint(args.checkpoint)
-# model.train()
+if args.checkpoint != '':
+    # By default, fine tune all layers
+    model.load_from_checkpoint(args.checkpoint)
+model.train()
 
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
