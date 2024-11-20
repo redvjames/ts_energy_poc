@@ -1,4 +1,7 @@
 streamlit
 pysqlite3-binary
+scikit-learn==1.5.2
+numpy==1.26.4
+torch==2.4.1
 buildings_bench
 
