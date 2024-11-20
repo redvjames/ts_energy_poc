@@ -124,12 +124,10 @@ transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'tra
 #     model.load_from_checkpoint(args.checkpoint)
 # model.train()
 
-st.write(os.path.dirname(np.__file__))
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
-st.write(os.listdir('/home/adminuser/venv'))
 st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
-st.write(os.listdir('/home/adminuser/venv/bin'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/'))
 
 # Get the file path of the module
 import buildings_bench
