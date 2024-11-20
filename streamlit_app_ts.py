@@ -115,10 +115,13 @@ model, loss, _ = model_factory(args.model, model_args)
 model = model.to(args.device)
 # transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
-if args.checkpoint != '':
-    # By default, fine tune all layers
-    model.load_from_checkpoint(args.checkpoint)
-model.train()
+checkpoint_path = args.checkpoint
+print(f"Checkpoint exists: {os.path.exists(checkpoint_path)}")
+
+# if args.checkpoint != '':
+#     # By default, fine tune all layers
+#     model.load_from_checkpoint(args.checkpoint)
+# model.train()
 
 # st.write(os.path.dirname(np.__file__))
 # st.write(os.getcwd())
