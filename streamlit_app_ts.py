@@ -79,7 +79,7 @@ class Args:
 args = Args(
     # repo_path=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench',
     model='TransformerWithGaussian-M',
-    checkpoint=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench\checkpoints\Transformer_Gaussian_M.pt',
+    # checkpoint=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench\checkpoints\Transformer_Gaussian_M.pt',
     device=None,
     # benchmark=[data_source],
     ignore_scoring_rules=False,
@@ -113,12 +113,14 @@ model_args = {'context_len': 168,
 # load and configure the model for transfer learning
 model, loss, _ = model_factory(args.model, model_args)
 model = model.to(args.device)
-transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
+# transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
-if args.checkpoint != '':
-    # By default, fine tune all layers
-    model.load_from_checkpoint(args.checkpoint)
-model.train()
+# if args.checkpoint != '':
+#     # By default, fine tune all layers
+#     model.load_from_checkpoint(args.checkpoint)
+# model.train()
+
+st.write(model)
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
