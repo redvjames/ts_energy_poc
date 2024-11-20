@@ -16,7 +16,6 @@ from buildings_bench.data.datasets import PandasTransformerDataset, keep_buildin
 from buildings_bench.evaluation.managers import DatasetMetricsManager
 from buildings_bench.evaluation import aggregate, scoring_rule_factory
 from buildings_bench.models import model_factory
-from scripts.transfer_learning_torch import transfer_learning as tl, train
 from torch.utils.data import ConcatDataset, Subset
 
 try:
