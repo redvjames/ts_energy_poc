@@ -118,6 +118,7 @@ model = model.to(args.device)
 st.write(os.path.dirname(np.__file__))
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
+st.write(os.listdir('/home/adminuser/venv'))
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
