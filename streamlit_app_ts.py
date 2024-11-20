@@ -129,10 +129,10 @@ import torch
 checkpoint_path = "/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt"
 try:
     checkpoint = torch.load(checkpoint_path)
-    print("Checkpoint successfully loaded.")
-    print("Keys in checkpoint:", checkpoint.keys())
+    st.write("Checkpoint successfully loaded.")
+    st.write("Keys in checkpoint:", checkpoint.keys())
 except Exception as e:
-    print(f"Failed to load checkpoint: {e}")
+    st.write(f"Failed to load checkpoint: {e}")
 
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
