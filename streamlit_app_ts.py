@@ -119,10 +119,20 @@ transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'tra
 # st.write(checkpoint_path)
 # st.write(f"Checkpoint exists: {os.path.exists(checkpoint_path)}")
 
-if args.checkpoint != '':
-    # By default, fine tune all layers
-    model.load_from_checkpoint(args.checkpoint)
-model.train()
+# if args.checkpoint != '':
+#     # By default, fine tune all layers
+#     model.load_from_checkpoint(args.checkpoint)
+# model.train()
+
+import torch
+
+checkpoint_path = "/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt"
+try:
+    checkpoint = torch.load(checkpoint_path)
+    print("Checkpoint successfully loaded.")
+    print("Keys in checkpoint:", checkpoint.keys())
+except Exception as e:
+    print(f"Failed to load checkpoint: {e}")
 
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
