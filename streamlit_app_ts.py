@@ -119,7 +119,7 @@ st.write(os.path.dirname(np.__file__))
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
 st.write(os.listdir('/home/adminuser/venv'))
-st.write(os.listdir('/home/adminuser/venv/lib'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11'))
 st.write(os.listdir('/home/adminuser/venv/bin'))
 
 # if st.button('Predict Energy Consumption'):
