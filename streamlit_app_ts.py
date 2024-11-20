@@ -116,7 +116,7 @@ model = model.to(args.device)
 # transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
 st.write(os.path.dirname(np.__file__))
-st.write(os..getcwd())
+st.write(os.getcwd())
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
