@@ -195,3 +195,4 @@ st-gsheets-connection
 gspread
 matplotlib
 lightgbm
+buildings_bench
