@@ -131,11 +131,10 @@ st.write(os.listdir('/home/adminuser/venv'))
 st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
 st.write(os.listdir('/home/adminuser/venv/bin'))
 
-def show_package_info_with_os_system(package_name):
-    os.system(f"pip show {package_name}")
-
-# Example usage
-st.write(show_package_info_with_os_system("buildings_bench"))
+# Get the file path of the module
+import buildings_bench
+module_path = inspect.getfile(buildings_bench)
+st.write(f"The file path of the buildings_bench module is: {module_path}")
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
