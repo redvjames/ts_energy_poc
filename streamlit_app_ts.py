@@ -66,6 +66,33 @@ if horizon == "1 Day":
 else:
     st.write("The model will predict 1 Week Ahead.")
 
+
+class Args:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+# Instantiate with dictionary values
+args = Args(
+    # repo_path=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench',
+    model='TransformerWithGaussian-M',
+    checkpoint=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench\checkpoints\Transformer_Gaussian_M.pt',
+    device='cuda:0',
+    # benchmark=[data_source],
+    ignore_scoring_rules=False,
+    dont_subsample_buildings=True, 
+    apply_scaler_transform='boxcox',
+    include_outliers=False,
+    num_training_days = 60,
+    variant_name = 'ph_data',
+    eval_zero_shot = False,
+    lr = 1e-3,
+    batch_size=360,
+    num_workers = 4,
+    max_epochs=25,
+    patience=10,
+    results_path = r'C:\Users\LENOVO\BuildingsBench'
+)
+
 if st.button('Predict Energy Consumption'):
     if uploaded_file is not None:
         # Can be used wherever a "file-like" object is accepted:
