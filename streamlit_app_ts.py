@@ -18,6 +18,7 @@ from buildings_bench.evaluation import aggregate, scoring_rule_factory
 from buildings_bench.models import model_factory
 from torch.utils.data import ConcatDataset, Subset
 from pathlib import Path
+import torch
 import os
 
 try:
