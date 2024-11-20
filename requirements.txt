@@ -1,4 +1,3 @@
-setuptools
 streamlit
 pysqlite3-binary
 safetensors
