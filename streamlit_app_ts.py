@@ -77,9 +77,9 @@ class Args:
 
 # Instantiate with dictionary values
 args = Args(
-    # repo_path=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench',
+    # repo_path=r'/mount/src/ts_energy_poc/',
     model='TransformerWithGaussian-M',
-    # checkpoint=r'C:\Users\LENOVO\Desktop\CAIR\Energy Forecasting\BuildingsBench\checkpoints\Transformer_Gaussian_M.pt',
+    checkpoint=r'/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt',
     device=None,
     # benchmark=[data_source],
     ignore_scoring_rules=False,
@@ -93,8 +93,8 @@ args = Args(
     batch_size=360,
     num_workers = 4,
     max_epochs=25,
-    patience=10,
-    results_path = r'C:\Users\LENOVO\BuildingsBench'
+    patience=10
+    # results_path = r'/mount/src/ts_energy_poc/'
 )
 
 model_args = {'context_len': 168,
@@ -115,12 +115,17 @@ model, loss, _ = model_factory(args.model, model_args)
 model = model.to(args.device)
 # transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
-st.write(os.path.dirname(np.__file__))
-st.write(os.getcwd())
-st.write(os.listdir('/mount/src/ts_energy_poc'))
-st.write(os.listdir('/home/adminuser/venv'))
-st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
-st.write(os.listdir('/home/adminuser/venv/bin'))
+if args.checkpoint != '':
+    # By default, fine tune all layers
+    model.load_from_checkpoint(args.checkpoint)
+model.train()
+
+# st.write(os.path.dirname(np.__file__))
+# st.write(os.getcwd())
+# st.write(os.listdir('/mount/src/ts_energy_poc'))
+# st.write(os.listdir('/home/adminuser/venv'))
+# st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
+# st.write(os.listdir('/home/adminuser/venv/bin'))
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
