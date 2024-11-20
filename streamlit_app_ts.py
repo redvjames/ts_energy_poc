@@ -115,7 +115,10 @@ model, loss, _ = model_factory(args.model, model_args)
 model = model.to(args.device)
 transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
-st.write(model)
+if args.checkpoint != '':
+    # By default, fine tune all layers
+    model.load_from_checkpoint(args.checkpoint)
+model.train()
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
