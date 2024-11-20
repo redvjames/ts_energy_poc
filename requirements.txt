@@ -1,10 +1,10 @@
-safetensors==0.4.4
-scikit-learn==1.5.1
-scipy==1.14.0
+safetensors
+scikit-learn
+scipy
 streamlit>=1.36.0
 pandas
 numpy
-torch==2.4.0
+torch
 matplotlib
 lightgbm
 buildings_bench
