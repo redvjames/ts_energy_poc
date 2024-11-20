@@ -126,8 +126,11 @@ transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'tra
 
 st.write(os.getcwd())
 st.write(os.listdir('/mount/src/ts_energy_poc'))
-st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
+# st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
 st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/models'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/configs'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/data'))
 
 # Get the file path of the module
 import buildings_bench
