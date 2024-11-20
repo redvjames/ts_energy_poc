@@ -124,12 +124,12 @@ if args.checkpoint != '':
     model.load_from_checkpoint(args.checkpoint)
 model.train()
 
-# st.write(os.path.dirname(np.__file__))
-# st.write(os.getcwd())
-# st.write(os.listdir('/mount/src/ts_energy_poc'))
-# st.write(os.listdir('/home/adminuser/venv'))
-# st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
-# st.write(os.listdir('/home/adminuser/venv/bin'))
+st.write(os.path.dirname(np.__file__))
+st.write(os.getcwd())
+st.write(os.listdir('/mount/src/ts_energy_poc'))
+st.write(os.listdir('/home/adminuser/venv'))
+st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
+st.write(os.listdir('/home/adminuser/venv/bin'))
 
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
