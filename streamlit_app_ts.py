@@ -67,6 +67,8 @@ else:
     st.write("The model will predict 1 Week Ahead.")
 
 
+# Model Setup
+
 class Args:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -92,6 +94,24 @@ args = Args(
     patience=10,
     results_path = r'C:\Users\LENOVO\BuildingsBench'
 )
+
+model_args = {'context_len': 168,
+ 'pred_len': 24,
+ 'num_encoder_layers': 3,
+ 'num_decoder_layers': 3,
+ 'd_model': 512,
+ 'nhead': 8,
+ 'dim_feedforward': 1024,
+ 'dropout': 0.0,
+ 'activation': 'gelu',
+ 'continuous_loads': True,
+ 'ignore_spatial': False,
+ 'continuous_head': 'gaussian_nll'}
+
+# load and configure the model for transfer learning
+model, loss, _ = model_factory(args.model, model_args)
+model = model.to(args.device)
+transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
 if st.button('Predict Energy Consumption'):
     if uploaded_file is not None:
