@@ -17,6 +17,7 @@ from buildings_bench.evaluation.managers import DatasetMetricsManager
 from buildings_bench.evaluation import aggregate, scoring_rule_factory
 from buildings_bench.models import model_factory
 from torch.utils.data import ConcatDataset, Subset
+from pathlib import Path
 
 try:
     df_input = pd.read_csv('./data/data.csv', index_col=0)
