@@ -131,6 +131,12 @@ st.write(os.listdir('/home/adminuser/venv'))
 st.write(os.listdir('/home/adminuser/venv/lib/python3.11/site-packages'))
 st.write(os.listdir('/home/adminuser/venv/bin'))
 
+def show_package_info_with_os_system(package_name):
+    os.system(f"pip show {package_name}")
+
+# Example usage
+st.write(show_package_info_with_os_system("buildings_bench"))
+
 # if st.button('Predict Energy Consumption'):
 #     if uploaded_file is not None:
 #         # Can be used wherever a "file-like" object is accepted:
