@@ -116,6 +116,7 @@ model = model.to(args.device)
 # transform_path = Path(os.environ.get('BUILDINGS_BENCH', '')) / 'metadata' / 'transforms'
 
 checkpoint_path = args.checkpoint
+st.write(checkpoint_path)
 st.write(f"Checkpoint exists: {os.path.exists(checkpoint_path)}")
 
 # if args.checkpoint != '':
