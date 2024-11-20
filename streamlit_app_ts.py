@@ -78,9 +78,9 @@ class Args:
 
 # Instantiate with dictionary values
 args = Args(
-    repo_path=r'/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/',
+    repo_path='/home/adminuser/venv/lib/python3.11/site-packages/buildings_bench/',
     model='TransformerWithGaussian-M',
-    checkpoint=r'/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt',
+    checkpoint='/mount/src/ts_energy_poc/model/TransformerWithGaussian-M_Thai.pt',
     device=None,
     # benchmark=[data_source],
     ignore_scoring_rules=False,
