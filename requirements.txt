@@ -9,7 +9,7 @@ matplotlib
 lightgbm
 buildings_bench
 distutils
-faiss
+faiss-cpu
 tomli
 argparse
 copy
