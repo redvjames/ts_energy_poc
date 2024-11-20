@@ -8,7 +8,7 @@ import numpy as np
 from datetime import datetime, timezone, timedelta
 import time
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
+# from sklearn.preprocessing import StandardScaler
 from buildings_bench.transforms import TimestampTransform, BoxCoxTransform as transform
 from buildings_bench import load_torch_dataset, load_pandas_dataset, benchmark_registry, utils, BuildingTypes
 from buildings_bench.tokenizer import LoadQuantizer
