@@ -133,6 +133,7 @@ st.write(os.listdir('/home/adminuser/venv/bin'))
 
 # Get the file path of the module
 import buildings_bench
+import inspect
 module_path = inspect.getfile(buildings_bench)
 st.write(f"The file path of the buildings_bench module is: {module_path}")
 
