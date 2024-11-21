@@ -66,13 +66,14 @@ uploaded_file = st.sidebar.file_uploader("Choose a file")
 
 edited_df = st.sidebar.data_editor(df_input)
 
-horizon = st.radio(
-    "Forecast Length",
-    ["1 Day"],
-    captions=[
-        "24 Hours"
-    ], horizontal=True
-)
+# horizon = st.radio(
+#     "Forecast Length",
+#     ["1 Day"],
+#     captions=[
+#         "24 Hours"
+#     ], horizontal=True
+# )
+horizon = "1 Day"
 
 if horizon == "1 Day":
     st.write("The model will predict 1 Day Ahead.")
