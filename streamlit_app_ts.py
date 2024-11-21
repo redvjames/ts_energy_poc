@@ -58,11 +58,9 @@ bldg_type = st.sidebar.radio(
     , horizontal=True
 )
 
-lat = st.sidebar.slider(
-    "Latitude", min_value=-90, max_value=90, step=.0001, value=14.5547)
+lat = st.sidebar.number_input("latitude", value=14.5565)
 
-long = st.sidebar.slider(
-    "Longitude", min_value=-180, max_value=180, step=.0001, value=121.0244)
+long = st.sidebar.number_input("Longitude", value=121.0244)
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
 
