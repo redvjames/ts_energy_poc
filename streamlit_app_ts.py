@@ -55,7 +55,7 @@ st.sidebar.title("Input Data")
 bldg_type = st.sidebar.radio(
     "Building Type",
     ["Residential", "Commercial"]
-    ], horizontal=True
+    , horizontal=True
 )
 
 lat = st.sidebar.slider(
