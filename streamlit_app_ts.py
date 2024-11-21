@@ -52,6 +52,18 @@ with col2:
 # Adding the sidebar for selecting the repo_id
 st.sidebar.title("Input Data")
 
+bldg_type = st.sidebar.radio(
+    "Building Type",
+    ["Residential", "Commercial"]
+    ], horizontal=True
+)
+
+lat = st.sidebar.slider(
+    "Latitude", min_value=-90, max_value=90, step=.0001, value=14.5547)
+
+long = st.sidebar.slider(
+    "Longitude", min_value=-180, max_value=180, step=.0001, value=121.0244)
+
 uploaded_file = st.sidebar.file_uploader("Choose a file")
 
 edited_df = st.sidebar.data_editor(df_input)
